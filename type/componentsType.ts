@@ -1,12 +1,7 @@
 export type contactTypes = {
     name: string,
     email:string,
-    phone:string,
-    address:string,
-    city:string,
-    state:string,
-    zip:string,
-    subscribe:boolean,
+    phone:number,
     message:string,
 
 }

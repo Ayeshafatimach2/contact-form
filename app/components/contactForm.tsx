@@ -1,76 +1,96 @@
+
+
 "use client"
-import { useState } from "react";
-import * as yup from "yup";
-import DisplayContact from "./displayContact";
+import { useState } from "react"
+import * as yup from "yup"
+import DisplayContact from "./displayContact"
 import { contactTypes, onChangeEventType } from "@/type/componentsType";
+
+
+
 
 export default function ContactForm() {
   const [contactInfo, setContactInfo] = useState<contactTypes>({
     name: "",
     email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
-    message: "",
-    subscribe: false, // Change to a boolean here
-  });
+    phone: 0,
+    message:"",
+  })
 
-  const [errors, setError] = useState<string[]>([]);
+  const [errors, setError ] = useState<string[]>([])
 
   const contactInfoSchema = yup.object().shape({
     name: yup.string().required().min(5).max(10),
     email: yup.string().email().required(),
-    phone: yup.string().required('Phone number is required'),
-    address: yup.string().required('Address is required'),
-    city: yup.string().required('City is required'),
-    state: yup.string().required('State is required'),
-    zip: yup.string().required('ZIP Code is required'),
-    message: yup.string().required(),
-    subscribe: yup.boolean(),
-  });
+    message: yup.string().required()
+ })
 
-  const [contactList, setContactList] = useState<contactTypes[]>([]);
+  const [contactList, setContactList] = useState<contactTypes[]>([])
 
   const onChangeHandler = (e: onChangeEventType) => {
     let userDetails = {
       ...contactInfo,
-      [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value, // Handle checkboxes
-    };
-    setContactInfo(userDetails);
-  };
+      [e.target.name]: e.target.value
+    }
+    setContactInfo(userDetails)
+  }
+
 
   const onClickHandler = async () => {
-    try {
-      const result = await contactInfoSchema.validate(contactInfo);
-
+     try {
+      const result = await contactInfoSchema.validate(contactInfo,{ abortEarly: false })
+      console.log(result);
+      
+       
       if (!result) {
-        return;
+        return 
       }
-
-      let newContactList: contactTypes[] = [...contactList, contactInfo];
-      setContactList(newContactList);
-
-      setError([]);
+      
+      let newContactList:contactTypes[] = [...contactList, contactInfo]
+      setContactList(newContactList)
+  
+      setError([])
       setContactInfo({
-        name: "",
-        email: "",
-        phone: "",
-        address: "",
-        city: "",
-        state: "",
-        zip: "",
-        message: "",
-        subscribe: false, // Change to a boolean here
-      });
-    } catch (err: any) {
-      setError(err.errors);
+        name:"",
+        email:"",
+        phone:0,
+        message:""
+      })
+     } catch (err:any) {
 
-      console.log("error", err.errors);
-    }
-  };
- 
+      setError(err.errors)
+      let errorsObject:any = {}
+      err.inner.forEach((err:any) => {
+        errorsObject[err.path] = err.errors;
+    });
+
+    console.log(errorsObject);
+
+       console.log("error",err.errors);
+
+       
+     }
+   
+    
+  }
+
+  // const getUserNameHandler = (event: onChangeEventType) => {
+  //   console.log("getUserNameHandler call", event.target.value);
+  //   // userName = event.target.value
+  //   setUserName(event.target.value)
+
+  // }
+
+  // const onChangeEmailHandler = (e: onChangeEventType) => {
+  //   setEmail(e.target.value)
+  // }
+
+  // var userName:string  = "defaut"
+  // const [userName, setUserName] = useState<string>("")
+  // const [email, setEmail] = useState<string>("")
+  // const [text, setText] = useState<string>("")
+  // const [loading, setLoading] = useState<boolean>(false)
+
   return (
     <>
       {/* <form className="max-w-md mx-auto"> */}
@@ -121,82 +141,6 @@ export default function ContactForm() {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="address" className="block text-gray-700 text-sm font-bold mb-2">
-          Address
-        </label>
-        <input
-          value={contactInfo.address}
-          onChange={onChangeHandler}
-          type="address"
-          id="address"
-          name="address"
-          className="w-full px-3 py-2 border rounded-md"
-          required
-        />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="city" className="block text-gray-700 text-sm font-bold mb-2">
-          City
-        </label>
-        <input
-          value={contactInfo.city}
-          onChange={onChangeHandler}
-          type="city"
-          id="city"
-          name="city"
-          className="w-full px-3 py-2 border rounded-md"
-          required
-        />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="state" className="block text-gray-700 text-sm font-bold mb-2">
-          State
-        </label>
-        <input
-          value={contactInfo.state}
-          onChange={onChangeHandler}
-          type="state"
-          id="state"
-          name="state"
-          className="w-full px-3 py-2 border rounded-md"
-          required
-        />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="zip" className="block text-gray-700 text-sm font-bold mb-2">
-          Zip
-        </label>
-        <input
-          value={contactInfo.zip}
-          onChange={onChangeHandler}
-          type="zip"
-          id="zip"
-          name="zip"
-          className="w-full px-3 py-2 border rounded-md"
-          required
-        />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor=" subscribe" className="block text-gray-700 text-sm font-bold mb-2">
-        Subscribe
-        </label>
-        <input
-          value={contactInfo.subscribe}
-          onChange={onChangeHandler}
-          type=" subscribe"
-          id=" subscribe"
-          name="z subscribe"
-          className="w-full px-3 py-2 border rounded-md"
-          required
-        />
-      </div>
-
-
-      <div className="mb-4">
         <label htmlFor="message" className="block text-gray-700 text-sm font-bold mb-2">
           Message
         </label>
@@ -210,9 +154,9 @@ export default function ContactForm() {
           required
         ></textarea>
       </div>
-        {errors.map((item)=>{
+        {errors.map((item, index)=>{
           return (
-            <div style={{color:"red"}}>
+            <div key={index} style={{color:"red"}}>
               <h1>{item}</h1>
             </div>
           )
@@ -231,3 +175,5 @@ export default function ContactForm() {
     </>
   )
 }
+
+
