@@ -1,5 +1,3 @@
-
-
 "use client"
 import { useState } from "react"
 import * as yup from "yup"
@@ -67,30 +65,8 @@ export default function ContactForm() {
     console.log(errorsObject);
 
        console.log("error",err.errors);
-
-       
      }
-   
-    
   }
-
-  // const getUserNameHandler = (event: onChangeEventType) => {
-  //   console.log("getUserNameHandler call", event.target.value);
-  //   // userName = event.target.value
-  //   setUserName(event.target.value)
-
-  // }
-
-  // const onChangeEmailHandler = (e: onChangeEventType) => {
-  //   setEmail(e.target.value)
-  // }
-
-  // var userName:string  = "defaut"
-  // const [userName, setUserName] = useState<string>("")
-  // const [email, setEmail] = useState<string>("")
-  // const [text, setText] = useState<string>("")
-  // const [loading, setLoading] = useState<boolean>(false)
-
   return (
     <>
       {/* <form className="max-w-md mx-auto"> */}
